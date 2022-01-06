@@ -1,0 +1,21 @@
+{
+  "name": "nodejs-amaliyot",
+  "version": "1.0.0",
+  "description": "bildingiz nimaligini",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "author": "Abduqahhor Norimmatov",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.2",
+    "stripe": "^8.195.0"
+  },
+  "devDependencies": {
+    "dotenv": "^10.0.0",
+    "nodemon": "^2.0.15"
+  }
+}
