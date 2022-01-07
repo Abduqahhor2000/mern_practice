@@ -17,16 +17,15 @@
     <!-- Custom StyleSheet -->
     <link rel="stylesheet" href="./styles.css" />
     <script src="https://checkout.stripe.com/checkout.js" defer></script>
-    <script>
-      var stripePublicKey = "";
-    </script>
     <script src="store.js" defer></script>
+    <script>
+      let stripePublicKey = "<% stripePublicKey %>";
+    </script>
     <title>Sammi Shop</title>
   </head>
-  <% console.log(data) %> 
   <body>
     <!-- HEADER -->
-    <header class="header">
+    <header class="header"> 
       <!-- Hero -->
       <div class="hero">
         <div class="hero-content d-flex container">

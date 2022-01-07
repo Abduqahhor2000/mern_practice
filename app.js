@@ -2,8 +2,7 @@ if( process.env.NODE_env !== "production"){
     require("dotenv").config({path: ".env"})
 }
 
-const StripeSecretKey = process.env.STRIPE_SECRET_KEY
-const StripePublicKey = process.env.STRIPE_PUBLIC_KEY
+const stripePublicKey = process.env.STRIPE_PUBLIC_KEY
 
 const express = require("express")
 const fs = require("fs") 
@@ -20,7 +19,42 @@ app.get("/store", (req, res) =>{
             res.status(500).end()
         }
         else{
-            res.render("store.ejs", {data: JSON.parse(data)})
+            res.render("store.ejs", {
+                stripePublicKey: stripePublicKey,
+                data: JSON.parse(data)
+            })
         }
     })
 })
+app.post("/purchase", function (req, res) {
+    fs.readFile("data.json", function (e, data) {
+      if (e) {
+        res.status(500).end();
+      } else {
+        const itemsJson = JSON.parse(data);
+        const itemsArray = itemsJson.mens.concat(itemsJson.women);
+        let total = 0;
+        req.body.items.forEach(function (item) {
+          const itemJson = itemsArray.find(function (i) {
+            return i.id == item.id;
+          });
+          total = total + itemJson.price * item.quantity;
+        });
+   
+        stripe.charges
+          .create({
+            amount: total,
+            source: req.body.stripeTokenId,
+            currency: "usd",
+          })
+          .then(function () {
+            console.log("Charge Succesfully");
+            res.json({ message: "Succesfully purchased items" });
+          })
+          .catch(function () {
+            console.log("Charge Fail");
+            res.status(500).end();
+          });
+      }
+    });
+  });
